@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Slab Design</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      font-weight: bold;
+      height: 70px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      gap: 15px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .navbar a:hover {
+      background-color: rgb(247, 177, 57);
+      color: #000;
+    }
+
+    .active {
+      background-color: rgb(247, 177, 57);
+    }
+
+    .logo {
+      position: absolute;
+      right: 5px;
+      width: 80px;
+      height: auto;
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      height: calc(100vh - 70px);
+    }
+
+    .form-panel {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .form-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #444;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      flex: 1;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-group input[type="number"] {
+      width: 80px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .canvas-box {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      min-width: 600px;
+      min-height: 500px;
+    }
+
+    canvas {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="navbar">
+    <a href="first.html"><i class="fa-solid fa-city"></i>Project</a>
+    <a href="slab.html" class="active"><i class="fa-solid fa-square"></i>Slab</a>
+    <a href="reinforcement.html"><i class="fa-regular fa-rectangle-list"></i>Reinforcement</a>
+    <a href="about.html"><i class="fa-solid fa-circle-info"></i>About Us</a>
+    <img src="logo.png" alt="Brand Logo" class="logo" />
+  </div>
+
+  <div class="container">
+    <!-- Left panel -->
+    <div class="form-panel">
+      <div class="form-box">
+        <h3>Slab Properties</h3>
+        <div class="form-group">
+          <label for="thickness">Thickness (mm)</label>
+          <input type="number" id="thickness" value="200" min="1" step="1" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel: Canvas -->
+    <div class="canvas-box">
+      <h3>Drawing of the Slab</h3>
+      <canvas id="slabCanvas"></canvas>
+    </div>
+  </div>
+
+  <script>
+    function drawSlab() {
+      const canvas = document.getElementById("slabCanvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const thickness = parseInt(document.getElementById("thickness").value);
+      if (isNaN(thickness) || thickness <= 0) return;
+
+      // Scale slab to fit canvas
+      const slabWidth = canvas.width - 100; // fixed width
+      const slabHeight = thickness * 2; // scale thickness
+      const startX = (canvas.width - slabWidth) / 2;
+      const startY = (canvas.height - slabHeight) / 2;
+
+      ctx.fillStyle = "#ddd";
+      ctx.fillRect(startX, startY, slabWidth, slabHeight);
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(startX, startY, slabWidth, slabHeight);
+
+      // Draw thickness label
+      ctx.fillStyle = "#000";
+      ctx.font = "16px Arial";
+      ctx.fillText(`Thickness = ${thickness} mm`, startX + 20, startY - 10);
+    }
+
+    document.getElementById("thickness").addEventListener("input", drawSlab);
+    window.addEventListener("resize", drawSlab);
+
+    drawSlab();
+  </script>
+
+</body>
+</html>

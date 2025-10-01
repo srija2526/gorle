@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beam Cross Sections</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      font-weight: bold;
+      height: 70px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      gap: 15px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .navbar a:hover {
+      background-color: rgb(247, 177, 57);
+      color: #000;
+    }
+
+    .active {
+      background-color: rgb(247, 177, 57);
+    }
+
+    .logo {
+      position: absolute;
+      right: 5px;
+      width: 80px;
+      height: auto;
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      height: calc(100vh - 70px);
+    }
+
+    .form-panel {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .form-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #444;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      flex: 1;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-group input[type="number"] {
+      width: 80px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .shape-option {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: #eee;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s;
+    }
+
+    .shape-option:hover {
+      border-color: #aaa;
+    }
+
+    .shape-option.selected {
+      border-color: rgb(247, 177, 57);
+      background-color: #fdf6e3;
+    }
+
+    .canvas-box {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      min-width: 600px;
+      min-height: 500px;
+    }
+
+    canvas {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    #new {
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+   <div class="navbar">
+  <a href="first.html" ><i class="fa-solid fa-city"></i>Project</a>
+  <a href="cross-section.html" class="active"><i class="fa-solid fa-square"></i>Cross Section</a>
+  <a href="reinforcement.html"><i class="fa-regular fa-rectangle-list" ></i> Reinforcement</a>
+  <a href="about.html" id="abt"><i class="fa-solid fa-circle-info"></i> About Us</a>
+  <img src="logo.png" alt="Brand Logo" class="logo">
+</div>
+
+  <div class="container">
+    <!-- Left Panel -->
+    <div class="form-panel">
+      <div class="form-box">
+        <div class="form-group">
+          <label for="concreteGrade">Grade of Concrete</label>
+          <input type="number" id="concreteGrade" placeholder="Enter value" />
+          <p>(MPa)</p>
+        </div>
+        <div class="form-group">
+          <label for="steelGrade">Grade of Steel</label>
+          <input type="number" id="steelGrade" placeholder="Enter value" />
+          <p>(MPa)</p>
+        </div>
+        <div class="form-group">
+          <label for="clearCover">Clear Cover to reinforcement</label>
+          <input type="number" id="clearCover" placeholder="Enter value" />
+          <p>(mm)</p>
+        </div>
+      </div>
+
+      <div class="form-box" id="new">
+        <h3>Cross Section</h3>
+        <div class="form-group">
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <img src="beam.png" alt="Rectangular Beam" class="shape-option selected" data-shape="Rectangle" />
+            <img src="newtbeam.png" alt="T-Beam" class="shape-option" data-shape="T-Beam" />
+            <img src="newibeam.png" alt="I-Beam" class="shape-option" data-shape="I-Section" />
+          </div>
+        </div>
+
+        <div id="rectInputs">
+          <div class="form-group">
+            <label for="width">Width (mm)</label>
+            <input type="number" id="width" value="300" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="height">Depth (mm)</label>
+            <input type="number" id="height" value="500" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="webThickness">Thickness of web (mm)</label>
+            <input type="number" id="webThickness" value="100" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="flangeThickness">Thickness of Flange(mm)</label>
+            <input type="number" id="flangeThickness" value="80" min="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="canvas-box">
+      <h3>Drawing of the Cross Section</h3>
+      <canvas id="crossCanvas"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("crossCanvas");
+    const ctx = canvas.getContext("2d");
+    let currentShape = "Rectangle";
+
+    function resizeCanvas() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      drawShape();
+    }
+
+    function drawShape() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#ddd";
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 2;
+
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  const width = parseFloat(document.getElementById("width").value) || 0;
+  const height = parseFloat(document.getElementById("height").value) || 0;
+  const webThickness = parseFloat(document.getElementById("webThickness").value) || 0;
+  const flangeThickness = parseFloat(document.getElementById("flangeThickness").value) || 0;
+
+  const maxCanvasWidth = canvas.width * 0.6;
+  const maxCanvasHeight = canvas.height * 0.6;
+  const scale = Math.min(maxCanvasWidth / width, maxCanvasHeight / height);
+
+  const w = width * scale;
+  const h = height * scale;
+  const webW = webThickness * scale;
+  const flangeH = flangeThickness * scale;
+
+  ctx.beginPath();
+
+  switch (currentShape) {
+    case "Rectangle":
+      ctx.rect(centerX - w / 2, centerY - h / 2, w, h);
+      break;
+
+    case "T-Beam":
+      ctx.rect(centerX - w / 2, centerY - h / 2, w, flangeH); // flange
+      ctx.rect(centerX - webW / 2, centerY - h / 2 + flangeH, webW, h - flangeH); // web
+      break;
+
+    case "I-Section":
+      ctx.rect(centerX - w / 2, centerY - h / 2, w, flangeH); // top flange
+      ctx.rect(centerX - webW / 2, centerY - h / 2 + flangeH, webW, h - 2 * flangeH); // web
+      ctx.rect(centerX - w / 2, centerY + h / 2 - flangeH, w, flangeH); // bottom flange
+      break;
+  }
+
+  ctx.fill();
+  ctx.stroke();
+
+  // ===== Dimension Lines & Labels =====
+  ctx.strokeStyle = "#666";
+  ctx.fillStyle = "#000";
+  ctx.lineWidth = 1;
+  ctx.font = "16px Arial";
+
+  // Horizontal width
+  drawArrow(centerX - w / 2, centerY + h / 2 + 30, centerX + w / 2, centerY + h / 2 + 30);
+  ctx.fillText(`${width} mm`, centerX - 20, centerY + h / 2 + 20,);
+
+  // Vertical height
+  drawArrow(centerX + w / 2 + 30, centerY - h / 2, centerX + w / 2 + 30, centerY + h / 2);
+  ctx.save();
+  ctx.translate(centerX + w / 2 + 35, centerY);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(`${height} mm`, -25, -10);
+  ctx.restore();
+
+  if (currentShape !== "Rectangle") {
+    // Web thickness arrow (horizontal in center of web)
+    drawArrow(centerX - webW/2, centerY - h/2 + flangeH + (h - flangeH)/2, centerX + webW/2, centerY - h/2 + flangeH + (h - flangeH)/2);
+    ctx.fillText(`${webThickness} mm`, centerX - 10, centerY - h/2 + flangeH + (h - flangeH)/2 - 5);
+
+    // Flange thickness arrow (vertical on the right of flange)
+    drawArrow(centerX + w / 2 + 20, centerY - h / 2, centerX + w / 2 + 20, centerY - h / 2 + flangeH);
+    ctx.save();
+    ctx.translate(centerX + w / 2 + 25, centerY - h / 2 + flangeH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText(` ${flangeThickness} mm`, -25, -10);
+    ctx.restore();
+  }
+
+  // Label shape
+  ctx.fillStyle = "#000";
+  ctx.font = "16px Arial";
+  ctx.fillText(`${currentShape}`, 20, 30);
+}
+
+
+    function drawArrow(x1, y1, x2, y2) {
+      const headLength = 10;
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const angle = Math.atan2(dy, dx);
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      // Arrowhead at x2, y2
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x2 - headLength * Math.cos(angle - Math.PI / 6), y2 - headLength * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(x2 - headLength * Math.cos(angle + Math.PI / 6), y2 - headLength * Math.sin(angle + Math.PI / 6));
+      ctx.lineTo(x2, y2);
+      ctx.fill();
+
+      // Arrowhead at x1, y1
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x1 + headLength * Math.cos(angle - Math.PI / 6), y1 + headLength * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(x1 + headLength * Math.cos(angle + Math.PI / 6), y1 + headLength * Math.sin(angle + Math.PI / 6));
+      ctx.lineTo(x1, y1);
+      ctx.fill();
+    }
+
+    // Shape selection handler
+    document.querySelectorAll(".shape-option").forEach(option => {
+      option.addEventListener("click", () => {
+        document.querySelectorAll(".shape-option").forEach(opt => opt.classList.remove("selected"));
+        option.classList.add("selected");
+        currentShape = option.dataset.shape;
+        toggleInputVisibility();
+        drawShape();
+      });
+    });
+
+    function toggleInputVisibility() {
+      const webInput = document.getElementById("webThickness").parentElement;
+      const flangeInput = document.getElementById("flangeThickness").parentElement;
+
+      if (currentShape === "Rectangle") {
+        webInput.style.display = "none";
+        flangeInput.style.display = "none";
+      } else {
+        webInput.style.display = "flex";
+        flangeInput.style.display = "flex";
+      }
+    }
+
+    // Input change listeners
+    ["width", "height", "webThickness", "flangeThickness"].forEach(id => {
+      document.getElementById(id).addEventListener("input", drawShape);
+    });
+
+    // Initial setup
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    toggleInputVisibility();
+  </script>
+</body>
+</html>
+

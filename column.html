@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Column Design</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      font-weight: bold;
+      height: 70px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      gap: 15px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .navbar a:hover {
+      background-color: rgb(247, 177, 57);
+      color: #000;
+    }
+
+    .active {
+      background-color: rgb(247, 177, 57);
+    }
+
+    .logo {
+      position: absolute;
+      right: 5px;
+      width: 80px;
+      height: auto;
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      height: calc(100vh - 70px);
+    }
+
+    .form-panel {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .form-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #444;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      flex: 1;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-group input[type="number"] {
+      width: 80px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .canvas-box {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      min-width: 600px;
+      min-height: 500px;
+    }
+
+    canvas {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    .shape-option {
+      width: 80px;
+      height: 80px;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      object-fit: cover;
+      transition: border 0.2s;
+    }
+
+    .shape-option:hover {
+      border-color: #aaa;
+    }
+
+    .shape-option.selected {
+      border-color: rgb(247, 177, 57);
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+   <div class="navbar">
+  <a href="first.html" ><i class="fa-solid fa-city"></i>Project</a>
+  <a href="cross-section.html" class="active"><i class="fa-solid fa-square"></i>Cross Section</a>
+  <a href="reinforcement.html"><i class="fa-regular fa-rectangle-list" ></i> Reinforcement</a>
+  <a href="about.html" id="abt"><i class="fa-solid fa-circle-info"></i> About Us</a>
+  <img src="logo.png" alt="Brand Logo" class="logo">
+</div>
+
+  <div class="container">
+    <!-- Left panel -->
+    <div class="form-panel">
+
+      <!-- Section 1: Nominal Compressive Strength -->
+      <div class="form-box">
+        <div class="form-group">
+          <label> Grade of Concrete</label>
+          <input type="number" id="3" placeholder="Enter value" />
+          <p>(MPa)</p>
+        </div>
+        <div class="form-group">
+          <label> Grade of Steel</label>
+          <input type="number" id="4" placeholder="Enter value" />
+          <p>(MPa)</p>
+        </div>
+        <div class="form-group">
+          <label>Clear cover to reinforcement</label>
+          <input type="number" id="4" placeholder="Enter value" />
+          <p>(mm)</p>
+        </div>
+
+      </div>
+
+      <!-- Section 2: Cross Section -->
+      <div class="form-box">
+        <h3>Cross Section</h3>
+
+        <!-- Shape Selection -->
+        <div class="form-group">
+          <div style="display: flex; gap: 10px;">
+            <img src="rectbeam.png" alt="Rectangular" id="rectShape" class="shape-option selected" />
+            <img src="circularbeam.png" alt="Circular" id="circularShape" class="shape-option" />
+          </div>
+        </div>
+
+        <!-- Rectangular Inputs -->
+        <div id="rectInputs">
+          <div class="form-group">
+            <label for="width">Width (mm)</label>
+            <input type="number" id="width" value="300" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="height">Depth (mm)</label>
+            <input type="number" id="height" value="300" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="radius">Corner Radius (mm)</label>
+            <input type="number" id="radius" value="25" min="0" />
+          </div>
+        </div>
+
+        <!-- Circle Input -->
+        <div class="form-group" id="circleInput" style="display: none;">
+          <label for="circleRadius">Diameter(mm)</label>
+          <input type="number" id="circleRadius" value="150" min="0" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel: Canvas -->
+    <div class="canvas-box">
+      <h3>Drawing of the Cross Section</h3>
+      <canvas id="crossSection"></canvas>
+    </div>
+  </div>
+
+  <script>
+    let currentShape = "rect";
+
+    function drawSection() {
+      const canvas = document.getElementById("crossSection");
+      const ctx = canvas.getContext("2d");
+
+      // Set canvas size to fill container
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 2;
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#000";
+
+      if (currentShape === "rect") {
+        const width = parseInt(document.getElementById("width").value);
+        const height = parseInt(document.getElementById("height").value);
+        const radiusInput = parseInt(document.getElementById("radius").value);
+        const safeRadius = Math.min(radiusInput, Math.min(width, height) / 2);
+
+        // Calculate scale to fit shape nicely with margin
+        const scale = Math.min((canvas.width - 200) / width, (canvas.height - 200) / height);
+        const startX = (canvas.width - width * scale) / 2;
+        const startY = (canvas.height - height * scale) / 2;
+
+        ctx.beginPath();
+        ctx.moveTo(startX + safeRadius * scale, startY);
+        ctx.lineTo(startX + width * scale - safeRadius * scale, startY);
+        ctx.quadraticCurveTo(startX + width * scale, startY, startX + width * scale, startY + safeRadius * scale);
+        ctx.lineTo(startX + width * scale, startY + height * scale - safeRadius * scale);
+        ctx.quadraticCurveTo(startX + width * scale, startY + height * scale, startX + width * scale - safeRadius * scale, startY + height * scale);
+        ctx.lineTo(startX + safeRadius * scale, startY + height * scale);
+        ctx.quadraticCurveTo(startX, startY + height * scale, startX, startY + height * scale - safeRadius * scale);
+        ctx.lineTo(startX, startY + safeRadius * scale);
+        ctx.quadraticCurveTo(startX, startY, startX + safeRadius * scale, startY);
+        ctx.closePath();
+
+        ctx.fillStyle = "#ddd";
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw dimension labels
+        ctx.fillStyle = "#000";
+        ctx.fillText(width + " mm", canvas.width / 2 - 20, startY - 10);
+        ctx.fillText(height + " mm", startX - 60, canvas.height / 2 + 5);
+
+     } else if (currentShape === "circle") {
+  const diameterInput = parseFloat(document.getElementById("circleRadius").value); // it's really diameter now
+  if (isNaN(diameterInput) || diameterInput <= 0) return;
+
+  // Fixed scale: 1 mm = 2 pixels (you can tweak this)
+  const mmToPx = 2;
+  const radiusPx = (diameterInput / 2) * mmToPx;
+
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  // Prevent drawing too large
+  const maxRadius = Math.min(canvas.width, canvas.height) / 2 - 20;
+  const finalRadius = Math.min(radiusPx, maxRadius);
+
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, finalRadius, 0, 2 * Math.PI);
+  ctx.fillStyle = "#ddd";
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = "#000";
+  ctx.fillText(`Ø = ${diameterInput} mm`, centerX - 40, centerY + finalRadius + 20);
+}
+
+    }
+
+    // Shape switching logic
+    const rectImg = document.getElementById("rectShape");
+    const circImg = document.getElementById("circularShape");
+
+    rectImg.addEventListener("click", () => {
+      currentShape = "rect";
+      rectImg.classList.add("selected");
+      circImg.classList.remove("selected");
+
+      document.getElementById("rectInputs").style.display = "block";
+      document.getElementById("circleInput").style.display = "none";
+      drawSection();
+    });
+
+    circImg.addEventListener("click", () => {
+      currentShape = "circle";
+      circImg.classList.add("selected");
+      rectImg.classList.remove("selected");
+
+      document.getElementById("rectInputs").style.display = "none";
+      document.getElementById("circleInput").style.display = "block";
+      drawSection();
+    });
+
+    // Listen for changes in inputs
+    document.querySelectorAll("#width, #height, #radius, #circleRadius").forEach(el => {
+      el.addEventListener("input", drawSection);
+    });
+
+    window.addEventListener("resize", drawSection);
+
+    // Initial draw
+    drawSection();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us - Structural Design UI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="'stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+   /* Navbar */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      font-weight: bold;
+      height:70px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      gap: 15px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .navbar a:hover {
+      background: rgb(247, 177, 57);
+      color: #000;
+    }
+    .active{
+        background-color: rgb(247, 177, 57);
+    }
+
+    .navbar i {
+      font-size: 16px;
+    }
+    .logo {
+      position: absolute;      
+      right: 5px;     
+      width: 80px;    
+      height: auto;
+    }
+    .content {
+      max-width: 2000px;
+      height: 400px;
+      margin: 0px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      
+    }
+
+    .content h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+      color:rgb(247, 177, 57);
+    }
+
+    .content pre {
+      line-height: 1.6;
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+   pre{
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+   }
+   .empty
+   {
+    max-width: 2000px;
+    height: 40px;
+    margin: 0px auto;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    background-color: #333;
+   }
+   .footer
+   {
+    max-width: 2000px;
+    height: 100px;
+    margin: 0px auto;
+    background: #050505;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+   }
+   #foot
+   {
+    font-size: medium;
+    color: #a8abaf;
+   }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+   <div class="navbar">
+  <a href="first.html"><i class="fa-solid fa-city"></i>Project</a>
+  <a href="cross-section.html"><i class="fa-solid fa-square"></i> Cross Section</a>
+  <a href="reinforcement.html"><i class="fa-regular fa-rectangle-list"></i> Reinforcement</a>
+  <a href="about.html"  class="active"><i class="fa-solid fa-circle-info"></i> About Us</a>
+  <img src="logo.png" alt="Brand Logo" class="logo">
+</div>
+
+
+  <!-- About Content -->
+  <div class="content">
+    <h1>About Us</h1>
+    <pre>
+      Gorle Group is a Structural Engineering Consultancy and we take our client’s challenge as our own. 
+      As engineers, scientists, managers, and technical specialists, we at Gorle Group have one vision, and
+      that is to see the possibilities in our clients’ objectives and make them happen, whatever may be the 
+      challenge and do this in a manner that is rewarding to all.
+    </pre>
+    <pre>
+      We at Gorle provide Structural Analysis, Design, rehabilitation and retrofitting for Architects, Developers, Contractors and Infrastructural companies. 
+      Our team specializes in the area of Buildings (RCC & Steel), Water & Waste Water Treatment Plants, Bridges and Industrial Structures. 
+      Gorle Group has a significant experience in Peer Review, Value Engineering & Structural Audits for old & new Buildings.
+    </pre>
+  </div>
+  <div class="empty">
+        <p></p>
+  </div>
+  <div class="footer">
+    <pre id="foot">
+      Powered by Gorlegroup.com
+          ©2018 Gorlegroup
+      Privacy Policy | Employee Login
+    </pre>
+  </div>
+
+</body>
+</html>
