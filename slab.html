@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Slab Design</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 12px 20px;
+      font-weight: bold;
+      height: 70px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      gap: 15px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .navbar a:hover {
+      background-color: rgb(247, 177, 57);
+      color: #000;
+    }
+
+    .active {
+      background-color: rgb(247, 177, 57);
+    }
+
+    .logo {
+      margin-left: auto;
+      width: 80px;
+      height: auto;
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      height: calc(100vh - 70px);
+    }
+
+    .form-panel {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .form-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #444;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      flex: 1;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-group input[type="number"] {
+      width: 80px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .canvas-box {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      min-width: 600px;
+    }
+
+    canvas {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<div class="navbar">
+  <a href="first.html"><i class="fa-solid fa-city"></i>Project</a>
+  <a href="#" class="active"><i class="fa-solid fa-square"></i>Cross Section</a>
+  <a href="#"><i class="fa-regular fa-rectangle-list"></i>Reinforcement</a>
+  <a href="ab"><i class="fa-solid fa-circle-info"></i>About</a>
+  <img src="logo.png" alt="Brand Logo" class="logo" />
+</div>
+
+<div class="container">
+
+  <!-- Left panel -->
+  <div class="form-panel">
+
+    <!-- Section 1: Material Properties -->
+    <div class="form-box">
+      <div class="form-group">
+        <label>Grade of Concrete</label>
+        <input type="number" id="concreteGrade" placeholder="Enter value" />
+        <p>(MPa)</p>
+      </div>
+      <div class="form-group">
+        <label>Grade of Steel</label>
+        <input type="number" id="steelGrade" placeholder="Enter value" />
+        <p>(MPa)</p>
+      </div>
+      <div class="form-group">
+        <label>Clear cover to reinforcement</label>
+        <input type="number" id="clearCover" placeholder="Enter value" />
+        <p>(mm)</p>
+      </div>
+    </div>
+
+    <!-- Section 2: Cross Section -->
+    <div class="form-box">
+      <h3>Cross Section</h3>
+
+      <!-- Slab Picture -->
+      <div style="text-align: center;">
+        <img src="slabog.png" alt="Slab Cross Section" style="max-width: 100%; height: auto;" />
+      </div>
+
+      <!-- Thickness Input -->
+      <div class="form-group" style="margin-top: 20px;">
+        <label for="thickness">Thickness</label>
+        <input type="number" id="thickness" value="250" />
+        <p>(mm)</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right panel: Canvas -->
+  <div class="canvas-box">
+    <h3>Drawing of the Cross Section</h3>
+    <canvas id="slabCanvas"></canvas>
+  </div>
+
+</div>
+
+<script>
+function drawSlab() {
+  const canvas = document.getElementById("slabCanvas");
+  if (!canvas) return; 
+  
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const thicknessInput = parseFloat(document.getElementById("thickness").value);
+  if (isNaN(thicknessInput) || thicknessInput <= 0) return;
+
+  const visualWidth = 1000; 
+  const paddingX = 60;
+  const paddingY = 60;
+
+  const drawAreaWidth = canvas.width - 2 * paddingX;
+  const drawAreaHeight = canvas.height - 2 * paddingY;
+
+  const scaleX = drawAreaWidth / visualWidth;
+  const scaleY = drawAreaHeight / thicknessInput;
+  const scale = Math.min(scaleX, scaleY) * 0.9; 
+
+  const drawWidth = visualWidth * scale;
+  const drawHeight = thicknessInput * scale;
+
+  const startX = (canvas.width - drawWidth) / 2;
+  const startY = (canvas.height - drawHeight) / 2;
+
+  // --- Slab Drawing with Integrated Break Lines (One In, One Out - MODIFIED) ---
+  const totalHeight = drawHeight;
+  
+  // **MODIFIED for Enlarged Left/Right:** Increased depth of the zig-zag
+  const depth = 25; 
+  
+  const cycles = 2; 
+  
+  // **MODIFIED for Conciseness:** V-section now occupies 20% of total height, centered.
+  const vSectionHeight = totalHeight * 0.20; 
+  const vTopY = startY + (totalHeight - vSectionHeight) / 2; 
+  const vBottomY = vTopY + vSectionHeight; 
+  const cycleHeight = vSectionHeight / cycles; 
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#000";
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'miter'; 
+  ctx.fillStyle = "#ddd"; 
+
+  // 1. Start at Top Left Corner
+  ctx.moveTo(startX, startY);
+
+  // 2. Draw TOP LINE (Rightward)
+  ctx.lineTo(startX + drawWidth, startY);
+
+  // 3. Draw RIGHT BREAK LINE (Downward: V-in then V-out)
+  
+  // 3a. Straight section down to V start
+  ctx.lineTo(startX + drawWidth, vTopY);
+  
+  // First V: INWARD
+  ctx.lineTo(startX + drawWidth - depth, vTopY + cycleHeight / 2); // Peak of V-in
+  
+  // Second V: OUTWARD
+  ctx.lineTo(startX + drawWidth + depth, vTopY + cycleHeight + cycleHeight / 2); // Peak of V-out
+  
+  // Connect to the end of the break section
+  ctx.lineTo(startX + drawWidth, vBottomY);
+  
+  // 3c. Straight section down to bottom corner
+  ctx.lineTo(startX + drawWidth, startY + drawHeight);
+
+  // 4. Draw BOTTOM LINE (Leftward)
+  ctx.lineTo(startX, startY + drawHeight);
+
+  // 5. Draw LEFT BREAK LINE (Upward: V-out then V-in)
+  
+  // 5a. Straight section up to V start
+  ctx.lineTo(startX, vBottomY);
+
+  // First V (when moving UP): OUTWARD (Starts at vBottomY, peak is vTopY + 1.5 cycles)
+  ctx.lineTo(startX - depth, vTopY + cycleHeight + cycleHeight / 2); // Peak of V-out
+  
+  // Second V (when moving UP): INWARD
+  ctx.lineTo(startX + depth, vTopY + cycleHeight / 2); // Peak of V-in
+
+  // Connect to the start of the break section
+  ctx.lineTo(startX, vTopY);
+  
+  // 5c. Close the path back to the top left corner 
+  ctx.closePath();
+
+  // Fill and Stroke the entire shape
+  ctx.fill();
+  ctx.stroke();
+  // --------------------------------------------------------
+
+  // 6. Draw Dimension Line (Thickness)
+  const dimX = startX - 30; 
+
+  // Dimension Line (Vertical) - Solid line
+  ctx.beginPath();
+  ctx.moveTo(dimX, startY);
+  ctx.lineTo(dimX, startY + drawHeight);
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Extension lines (Horizontal) - Dashed lines
+  ctx.beginPath();
+  ctx.setLineDash([3, 3]); // Dashed
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(dimX + 5, startY);
+  ctx.moveTo(startX, startY + drawHeight);
+  ctx.lineTo(dimX + 5, startY + drawHeight);
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.setLineDash([]); // Reset line style
+
+  // Arrows/Tics on dimension line (diagonal lines)
+  function drawDimTic(x, y, isTop) {
+    ctx.beginPath();
+    const ticLength = 10;
+    ctx.moveTo(x - ticLength / 2, y + (isTop ? -ticLength / 2 : ticLength / 2));
+    ctx.lineTo(x + ticLength / 2, y + (isTop ? ticLength / 2 : -ticLength / 2));
+    ctx.strokeStyle = "#333";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  drawDimTic(dimX, startY, true);
+  drawDimTic(dimX, startY + drawHeight, false);
+
+  // 7. Thickness Label Text
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#000";
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+  
+  ctx.save();
+  ctx.translate(dimX - 10, startY + drawHeight / 2); 
+  ctx.rotate(-Math.PI / 2); 
+  ctx.fillText(`${thicknessInput} mm (h)`, 0, 0);
+  ctx.restore(); 
+}
+
+// Event Listeners (Keep these)
+document.getElementById("thickness").addEventListener("input", drawSlab);
+window.addEventListener("resize", drawSlab);
+
+// Initial Draw (Keep this)
+drawSlab();
+</script>
+</body>
+</html>
